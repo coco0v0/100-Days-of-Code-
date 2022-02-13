@@ -89,3 +89,27 @@ function dynamicallyLoadScript(url) {
     right: 100%; /* To the left of the tooltip */
     margin-top: -5px;
 
+mport json
+from time import time
+import ezdict
+import requests
+from ezdict import EZDict
+from functools import cached_property
+from copy import deepcopy
+import json
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+import time
+
+
+class Head2Block(object):
+    def __init__(self, text=None) -> None:
+        if text is None:
+            text = []
+        self._text = text
+        self._payload= EZDict(
+            EZDict(
+                type="heading_2",
+                heading_2 = {
+                    "text": self._te
+
