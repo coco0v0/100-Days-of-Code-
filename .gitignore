@@ -89,7 +89,7 @@ function dynamicallyLoadScript(url) {
     right: 100%; /* To the left of the tooltip */
     margin-top: -5px;
 
-mport json
+import json
 from time import time
 import ezdict
 import requests
@@ -111,5 +111,29 @@ class Head2Block(object):
             EZDict(
                 type="heading_2",
                 heading_2 = {
-                    "text": self._te
+                    "text": self._text
+                }
+            )
+        )
 
+    @property
+    def json(self):
+        self._payload[self._payload.type].text = [
+            t.json for t in self._text
+        ]
+        return self._payload
+
+
+class Head1Block(Head2Block):
+    def __init__(self, text=None) -> None:
+        if text is None:
+            text = []
+        self._text = text
+        self._payload= EZDict(
+            EZDict(
+                type="heading_1",
+                heading_1 = {
+                    "text": self._text
+                }
+            )
+        )
