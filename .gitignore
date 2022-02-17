@@ -137,3 +137,88 @@ class Head1Block(Head2Block):
                 }
             )
         )
+
+
+class Head3Block(Head2Block):
+    def __init__(self, text=None) -> None:
+        if text is None:
+            text = []
+        self._text = text
+        self._payload= EZDict(
+            EZDict(
+                type="heading_3",
+                heading_3 = {
+                    "text": self._text
+                }
+            )
+        )
+
+
+class ParagraphBlock(object):
+    def __init__(self, text=None) -> None:
+        if text is None:
+            text = []
+        self._text = text
+        self._payload= EZDict(
+            EZDict(
+                type="paragraph",
+                paragraph=EZDict(
+                    text=self._text
+                )
+            )
+        )
+
+    @property
+    def json(self):
+        self._payload.paragraph.text = [
+            t.json for t in self._text
+        ]
+        return self._payload
+
+class Text(object):
+    def __init__(self, text=None, link=None) -> None:
+        if not isinstance(text, str):
+            raise TypeError("text must be a string")
+        self._text = text
+        self._payload= EZDict({
+            "type": "text",
+            "text": {
+                "content": self._text,
+                # "link": {
+                #     "type": "url",
+                #     "url": link,
+                #     }
+                }
+            })
+        if link is not None:
+            self._payload.text.link = {
+                "type": "url",
+                "url": link,
+            }
+
+    @property
+    def json(self):
+        return self._payload
+
+
+# class 
+
+
+# %%
+class Client(object):
+    def __init__(self, token) -> None:
+        self.url = "https://www.notion.so/api/v1/"
+        self.token = token
+    
+    def get_me(self):
+        resp = requests.get(
+            'https://api.notion.com/v1/users/me', 
+            headers={
+                "Authorization": "Bearer " + self.token,
+                "Notion-Version": "2021-08-16"})
+        try:
+            result = EZDict(resp.json())
+            return result
+        except Exception as e:
+            print(e)
+            return resp
